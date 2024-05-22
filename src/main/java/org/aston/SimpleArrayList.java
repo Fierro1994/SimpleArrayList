@@ -14,11 +14,7 @@ public class SimpleArrayList<T> {
      * Дефолтный конструктор, для создания массива
      */
     public SimpleArrayList() {
-        try {
             this.initialArray = (T[]) new Object[DEF_CAPACITY];
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
     }
 
     /**
@@ -28,11 +24,8 @@ public class SimpleArrayList<T> {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Сapacity cannot be <= 0");
         }
-        try {
             this.initialArray = (T[]) new Object[capacity];
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
+
     }
 
     /**
@@ -44,8 +37,7 @@ public class SimpleArrayList<T> {
      *
      * @param item - объект который нужно добавить
      */
-    public void add(Object item) {
-        try {
+    public void add(T item) {
             if (position >= initialArray.length) {
                 T[] newArray = (T[]) new Object[initialArray.length + 5];
                 for (int i = 0; i < initialArray.length; i++) {
@@ -57,9 +49,6 @@ public class SimpleArrayList<T> {
             } else {
                 this.initialArray[position++] = (T) item;
             }
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
     }
     /**
      * В этом методе мы добавляем новые объекты в наш Массив по определенному индексу
@@ -75,9 +64,7 @@ public class SimpleArrayList<T> {
      * @param index - индекс
      * @param item - элемент, который нужно добавить
      */
-    public void add(int index, Object item) {
-        try {
-
+    public void add(int index, T item) {
             if (position >= initialArray.length) {
                 T[] newArray = (T[]) new Object[initialArray.length + 1];
 
@@ -104,10 +91,6 @@ public class SimpleArrayList<T> {
                 position++;
                 this.initialArray = newArray;
             }
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
     }
     /**
      * В этом методе , мы добавляем элементы из одного массива в другой.
@@ -117,7 +100,6 @@ public class SimpleArrayList<T> {
      * @param items - массив , который нужно добавить
      */
     public void addAll(SimpleArrayList items) {
-        try {
             T[] newArray = (T[]) new Object[initialArray.length + items.size()];
             for (int i = 0; i < initialArray.length; i++) {
                 newArray[i] = initialArray[i];
@@ -127,9 +109,6 @@ public class SimpleArrayList<T> {
                 position++;
             }
             this.initialArray = newArray;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
     }
     /**
      * Этот метод создан для получения объекта из массива по индексу
@@ -156,8 +135,8 @@ public class SimpleArrayList<T> {
             }
             position--;
             this.initialArray = newArray;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException(e.getMessage());
         }
     }
 
@@ -169,7 +148,7 @@ public class SimpleArrayList<T> {
      * элемент, находящийся по найденному индексу
      * @param removedItem - объект , который нужно удалить
      */
-    public void remove(Object removedItem) throws ClassCastException {
+    public void remove(T removedItem) {
         try {
             T[] newArray = (T[]) new Object[initialArray.length - 1];
             int index = 0;
@@ -185,19 +164,17 @@ public class SimpleArrayList<T> {
             }
             position--;
             this.initialArray = newArray;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
+        } catch (NullPointerException e) {
+            throw new NullPointerException(e.getMessage());
         }
     }
     /**
      *Этот метод очищает массив , создаётся новый массив с дефолтным объёмом
      */
     public void removeAll() {
-        try {
+
             this.initialArray = (T[]) new Object[DEF_CAPACITY];
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.getMessage());
-        }
+
     }
 
     /**
@@ -206,14 +183,18 @@ public class SimpleArrayList<T> {
      * @param item - объект
      */
     public void replace(int index, T item) {
+        try {
         this.initialArray[index] = item;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException(e.getMessage());
+        }
     }
     /**
      *В этом методе мы проверяем с помощью цикла, находится ли переданный объект в массиве
      * @param item - объект
      * @return boolean, есть ли в массиве указанный элемент
      */
-    public boolean contains(Object item) {
+    public boolean contains(T item) {
         for (T t : initialArray) {
             if (t != null && t.equals(item)) {
                 return true;
@@ -270,10 +251,6 @@ public class SimpleArrayList<T> {
                     i++;
                 } else if (arrayComp[j].compareTo(arrayComp[start]) > 0) {
                     j--;
-                } else if (j < i) {
-                    break;
-                } else {
-                    exchange(array, i, j);
                 }
             }
             array = (T[]) arrayComp;
@@ -290,7 +267,6 @@ public class SimpleArrayList<T> {
         T tmp = array[i];
         array[i] = array[j];
         array[j] = tmp;
-        System.out.println(array[i]);
         initialArray = array;
     }
 
